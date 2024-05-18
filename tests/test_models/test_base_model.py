@@ -95,6 +95,28 @@ class TestBaseModel(unittest.TestCase):
             BaseModel.to_dict(self, 98)
         msg = "BaseModel.to_dict() takes 1 positional argument but 2 were given"
         self.assertEqual(str(e.exception), msg)
+    
+    def test_4_instantiation(self):
+        """Tests instantiation of objects with **kwargs."""
+        obj = BaseModel()
+        obj.name = "Sintayehu Mulugeta Kebede"
+        obj.age = 27
+        obj_dict = obj.to_dict()
+        new_obj = BaseModel(**obj_dict)
+        self.assertEqual(obj.to_dict(), new_obj.to_dict())
+
+    def test_4_instantiation_dict(self):
+        """Tests instantiation with **kwargs from custom dict."""
+        d = {"__class__": "BaseModel",
+             "updated_at":
+             datetime(2050, 12, 30, 23, 59, 59, 123456).isoformat(),
+             "created_at": datetime.now().isoformat(),
+             "id": uuid.uuid4(),
+             "var": "foobar",
+             "int": 108,
+             "float": 3.14}
+        o = BaseModel(**d)
+        self.assertEqual(o.to_dict(), d)
 
 if __name__ == "__main__":
     unittest.main()
