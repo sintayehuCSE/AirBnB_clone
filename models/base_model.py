@@ -13,10 +13,12 @@ class BaseModel():
         self.updated_at = (datetime.now())
 
     def save(self):
+        """Updates the updated_at attribute with the current datetime."""
         self.updated_at = datetime.now()
 
     def to_dict(self):
-        attribute_dict  = self.__dict__.copy()
+        """Returns a dictionary representation of an instance."""
+        attribute_dict = self.__dict__.copy()
         attribute_dict['created_at'] = attribute_dict['created_at'].isoformat()
         attribute_dict['updated_at'] = attribute_dict['updated_at'].isoformat()
         attribute_dict['__class__'] = type(self).__name__
@@ -24,4 +26,5 @@ class BaseModel():
 
     def __str__(self):
         """Return a nice printable string representation of the object."""
-        return "[{}] ({}) {}".format(type(self).__name__, self.id, self.__dict__)
+        return ("[{}] ({}) {}".format(type(self).__name__, self.id,
+                                      self.__dict__))
