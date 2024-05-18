@@ -24,20 +24,20 @@ class TestBaseModel(unittest.TestCase):
 		self.assertTrue(issubclass(type(b), BaseModel))
 	
 	def test_3_init_no_args(self):
-        """Tests __init__ with no arguments."""
-        with self.assertRaises(TypeError) as e:
-            BaseModel.__init__()
-        msg = "__init__() missing 1 required positional argument: 'self'"
-        self.assertEqual(str(e.exception), msg)
-	
+		"""Tests __init__ with no arguments."""
+		with self.assertRaises(TypeError) as e:
+			BaseModel.__init__()
+		msg = "BaseModel.__init__() missing 1 required positional argument: 'self'"
+		self.assertEqual(str(e.exception), msg)
+
 	def test_3_datetime_created(self):
 		"""Tests if updated_at and created_at time are current at creation."""
 		date_now = datetime.now()
 		b = BaseModel()
 		diff = b.updated_at - b.created_at
-		self.assertTrue(abs(diff.total_seconds) < 0.01)
+		self.assertTrue(abs(diff.total_seconds()) < 0.01)
 		diff = b.created_at - date_now
-		self.assertTrue(abs(diff.total_seconds) < 0.01)
+		self.assertTrue(abs(diff.total_seconds()) < 0.01)
 
 	def test_3_unique_id(self):
 		"""Tests for creation of unique id for each instance."""
@@ -71,30 +71,30 @@ class TestBaseModel(unittest.TestCase):
 
 	def test_3_to_dict(self):
 		"""Tests the public instance method to_dict()."""
-		b - BaseModel()
+		b = BaseModel()
 		b.name = "Sintayehu Mulugeta Kebede"
 		b.age = 27
 		d = b.to_dict()
-		self.assertEqual(d['id'], b['id'])
+		self.assertEqual(d['id'], b.id)
 		self.assertEqual(d["__class__"], type(b).__name__)
 		self.assertEqual(d["created_at"], b.created_at.isoformat())
 		self.assertEqual(d["updated_at"], b.updated_at.isoformat())
 		self.assertEqual(d["name"], b.name)
 		self.assertEqual(d["age"], b.age)
 	
-	def  def test_3_to_dict_no_args(self):
-        """Tests to_dict() with no arguments."""
-        with self.assertRaises(TypeError) as e:
-            BaseModel.to_dict()
-        msg = "to_dict() missing 1 required positional argument: 'self'"
-        self.assertEqual(str(e.exception), msg)
-
-    def test_3_to_dict_excess_args(self):
-        """Tests to_dict() with too many arguments."""
-        with self.assertRaises(TypeError) as e:
-            BaseModel.to_dict(self, 98)
-        msg = "to_dict() takes 1 positional argument but 2 were given"
-        self.assertEqual(str(e.exception), msg)
+	def test_3_to_dict_no_args(self):
+		"""Tests to_dict() with no arguments."""
+		with self.assertRaises(TypeError) as e:
+			BaseModel.to_dict()
+		msg = "BaseModel.to_dict() missing 1 required positional argument: 'self'"
+		self.assertEqual(str(e.exception), msg)
+	
+	def test_3_to_dict_excess_args(self):
+		"""Tests to_dict() with too many arguments."""
+		with self.assertRaises(TypeError) as e:
+			BaseModel.to_dict(self, 98)
+		msg = "BaseModel.to_dict() takes 1 positional argument but 2 were given"
+		self.assertEqual(str(e.exception), msg)
 
 if __name__ == "__main__":
 	unittest.main()
