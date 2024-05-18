@@ -6,11 +6,21 @@ from datetime import datetime
 
 class BaseModel():
     """A basemodel for all the object of this project."""
-    def __init__(self):
-        """Initialize the common attributes of this project's objet."""
-        self.id = str(uuid.uuid4())
-        self.created_at = (datetime.now())
-        self.updated_at = (datetime.now())
+    def __init__(self, *args, **kwargs):
+        """ Initialize the common attributes of this project's objet.
+            Args:
+                args (tuple): List of items....
+                kwargs (dict): A dictionary to set as object attribute
+        """
+        if kwargs:
+            self.__dict__ = kwargs.copy()
+            del self.__dict__['__class__']
+            self.__dict__['updated_at'] = datetime.fromisoformat(kwargs['updated_at'])
+            self.__dict__['created_at'] = datetime.fromisoformat(kwargs['created_at'])
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = (datetime.now())
+            self.updated_at = (datetime.now())
 
     def save(self):
         """Updates the updated_at attribute with the current datetime."""
