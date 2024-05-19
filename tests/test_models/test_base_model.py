@@ -10,12 +10,18 @@ import os
 import json
 from datetime import datetime
 from models.base_model import BaseModel
+from models import storage
+from models.engine.file_storage import FileStorage
 
 
 class TestBaseModel(unittest.TestCase):
     """This class will test the BaseModel class against various
        cases
     """
+    def resetStorage(self):
+        FileStorage._FileStorage__objects = {}
+        if os.path.isfile(FileStorage._FileStorage__file_path):
+            os.remove(FileStorage._FileStorage__file_path)
     def test_3_instatiation(self):
         """Tests instantiation of BaseModel class."""
         b = BaseModel()
@@ -117,6 +123,37 @@ class TestBaseModel(unittest.TestCase):
              "float": 3.14}
         o = BaseModel(**d)
         self.assertEqual(o.to_dict(), d)
+
+    def test_5_save(self):
+        """Tests that storage.save() is called from save()."""
+        self.resetStorage()
+        b = BaseModel()
+        b.save()
+        key = "{}.{}".format(type(b).__name__, b.id)
+        d = {key: b.to_dict()}
+        self.assertTrue(os.path.isfile(FileStorage._FileStorage__file_path))
+        with open(FileStorage._FileStorage__file_path,
+                  "r", encoding="utf-8") as f:
+            self.assertEqual(len(f.read()), len(json.dumps(d)))
+            f.seek(0)
+            self.assertEqual(json.load(f), d)
+
+    def test_5_save_no_args(self):
+        """Tests save() with no arguments."""
+        self.resetStorage()
+        with self.assertRaises(TypeError) as e:
+            BaseModel.save()
+        msg = "BaseModel.save() missing 1 required positional argument: 'self'"
+        self.assertEqual(str(e.exception), msg)
+    def test_5_save_excess_args(self):
+        """Tests save() with too many arguments."""
+        self.resetStorage()
+        with self.assertRaises(TypeError) as e:
+            BaseModel.save(self, 98)
+        msg = "BaseModel.save() takes 1 positional argument but 2 were given"
+        self.assertEqual(str(e.exception), msg)
+
+
 
 if __name__ == "__main__":
     unittest.main()
