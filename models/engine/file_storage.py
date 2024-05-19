@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """ A class for file storage Engine."""
 import json
-import os
 from datetime import datetime
 
 
@@ -44,8 +43,6 @@ class FileStorage():
             (__file_path) exists ; otherwise, do nothing. If the file doesn’t
             exist, no exception should be raised)
         """
-        if not os.path.isfile(FileStorage.__file_path):
-            return
         try:
             with open(FileStorage.__file_path, 'r', encoding='utf-8') as f:
                 new_dict = json.load(f)
@@ -55,6 +52,7 @@ class FileStorage():
                     FileStorage.__objects[key] = obj
         except (FileNotFoundError, IsADirectoryError):
             pass
+
     def create_obj(self, class_name, **kwargs):
         from models.base_model import BaseModel
 
@@ -63,4 +61,3 @@ class FileStorage():
             'User': 'User'
             }
         return (class_dict[class_name](**kwargs))
-    
