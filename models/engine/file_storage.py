@@ -54,10 +54,20 @@ class FileStorage():
             pass
 
     def create_obj(self, class_name, **kwargs):
+        """Re-load previously creeated object of a project
+            from a JSON file.
+
+            Args:
+                class_name (str): The class of object to be reloaded
+                kwargs (dict): The attribute dictionarry of the object
+            Return:
+                new_obj (obj): The newly  created object memory address
+        """
         from models.base_model import BaseModel
 
         class_dict = {
             'BaseModel': BaseModel,
             'User': 'User'
             }
-        return (class_dict[class_name](**kwargs))
+        new_obj = class_dict[class_name](**kwargs)
+        return new_obj
