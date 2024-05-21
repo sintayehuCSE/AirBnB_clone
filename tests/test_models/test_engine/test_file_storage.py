@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Test for storage
+Test for storage engine class.
 """
 from datetime import datetime
 import unittest
@@ -48,3 +48,7 @@ class Test_FileStorage(unittest.TestCase):
         self.assertIsNotNone(FileStorage.new.__dict__)
         self.assertIsNotNone(FileStorage.save.__dict__)
         self.assertIsNotNone(FileStorage.reload.__dict__)
+    
+
+if __name__ == "__main__":
+    unittest.main()
