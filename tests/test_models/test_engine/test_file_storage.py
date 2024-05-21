@@ -7,6 +7,7 @@ import unittest
 from time import sleep
 import json
 from models.engine.file_storage import FileStorage
+from models.base_model import BaseModel
 
 
 class Test_FileStorage(unittest.TestCase):
@@ -26,19 +27,20 @@ class Test_FileStorage(unittest.TestCase):
 
     def test_FileStorage_all(self):
         """check presence of all() method in Engine file."""
-        self.assertIsNotNone(FileStorage.all)
+        self.assertIsNotNone(FileStorage().all())
     
     def test_FileStorage_new(self):
-        """check presence of new() method in Engine file.""" 
-        self.assertIsNotNone(FileStorage.new)
+        """check presence of new() method in Engine file."""
+        b = BaseModel()
+        self.assertIsNone(FileStorage().new(b))
 
     def test_FileStorage_save(self):
         """check presence of save() method in Engine file."""
-        self.assertIsNotNone(FileStorage.save)
+        self.assertIsNone(FileStorage().save())
 
     def test_FileStorage_reload(self):
         """check presence of reload() method in Engine file."""
-        self.assertIsNotNone(FileStorage.reload)
+        self.assertIsNone(FileStorage().reload())
 
     def test_method_documented(self):
         """Check if method of thee class are documented."""
