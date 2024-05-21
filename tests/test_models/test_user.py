@@ -6,7 +6,7 @@ from models.user import User
 
 class Test_User(unittest.TestCase):
     """Test the status of User class."""
-    def test_obje_creation(self):
+    def test_user_obj(self):
         """Test creation of User Object."""
         u = User()
         self.assertIsInstance(u, User)
