@@ -64,10 +64,11 @@ class FileStorage():
                 new_obj (obj): The newly  created object memory address
         """
         from models.base_model import BaseModel
+        from models.user import User
 
         class_dict = {
             'BaseModel': BaseModel,
-            'User': 'User'
+            'User': User
             }
         new_obj = class_dict[class_name](**kwargs)
         return new_obj
