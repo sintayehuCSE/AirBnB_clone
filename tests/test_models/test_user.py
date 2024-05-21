@@ -27,4 +27,6 @@ class Test_User(unittest.TestCase):
         """Test the type of User last name."""
         self.assertIs(str, type(User.last_name))
 
-    def
+
+if __name__ == "__main__":
+    unittest.main()
