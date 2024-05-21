@@ -65,10 +65,12 @@ class FileStorage():
         """
         from models.base_model import BaseModel
         from models.user import User
+        from models.city import City
 
         class_dict = {
             'BaseModel': BaseModel,
-            'User': User
+            'User': User,
+            'City': City
             }
         new_obj = class_dict[class_name](**kwargs)
         return new_obj
