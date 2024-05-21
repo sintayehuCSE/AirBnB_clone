@@ -28,7 +28,7 @@ class Test_FileStorage(unittest.TestCase):
     def test_FileStorage_all(self):
         """check presence of all() method in Engine file."""
         self.assertIsNotNone(FileStorage().all())
-    
+
     def test_FileStorage_new(self):
         """check presence of new() method in Engine file."""
         b = BaseModel()
@@ -47,4 +47,4 @@ class Test_FileStorage(unittest.TestCase):
         self.assertIsNotNone(FileStorage.all.__dict__)
         self.assertIsNotNone(FileStorage.new.__dict__)
         self.assertIsNotNone(FileStorage.save.__dict__)
-        self.assertIsNotNone(FileStorage.reload.__dict__)        
+        self.assertIsNotNone(FileStorage.reload.__dict__)
