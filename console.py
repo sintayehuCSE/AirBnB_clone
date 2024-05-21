@@ -5,6 +5,11 @@
 import cmd
 from models.base_model import BaseModel
 from models.user import User
+from models.city import City
+from models.place import Place
+from models.state import State
+from models.amenity import Amenity
+from models.review import Review
 from models import storage
 
 
@@ -130,7 +135,12 @@ class HBNBCommand(cmd.Cmd):
         """
         class_dict = {
             'BaseModel': BaseModel,
-            'User': User
+            'User': User,
+            'City': City,
+            'Place': Place,
+            'State': State,
+            'Amenity': Amenity,
+            'Review': Review
         }
         if not arg:
             print("** class name missing **")
