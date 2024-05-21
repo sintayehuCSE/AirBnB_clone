@@ -4,6 +4,7 @@
 """
 import cmd
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 
 
@@ -108,8 +109,12 @@ class HBNBCommand(cmd.Cmd):
                             and attr_name != 'updated_at')
                     if cnst:
                         if hasattr(obj, attr_name):
-                            setattr(obj, attr_name,
-                                    type(obj.__dict__[attr_name])(attr_value))
+                            try:
+                                attr_type = type(obj.__dict__[attr_name])
+                                setattr(obj, attr_name, attr_type(attr_value))
+                            except KeyError:
+                                attr_type = type(type(obj).__dict__[attr_name])
+                                setattr(obj, attr_name, attr_type(attr_value))
                         else:
                             setattr(obj, attr_name, attr_value)
                         obj.save()
@@ -124,7 +129,8 @@ class HBNBCommand(cmd.Cmd):
                 2. None if arg is not valid class-name.
         """
         class_dict = {
-            'BaseModel': BaseModel
+            'BaseModel': BaseModel,
+            'User': User
         }
         if not arg:
             print("** class name missing **")
