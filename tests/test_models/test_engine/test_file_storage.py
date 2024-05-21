@@ -38,7 +38,7 @@ class Test_FileStorage(unittest.TestCase):
         """check presence of save() method in Engine file."""
         self.assertIsNone(FileStorage().save())
 
-    def test_FileStorage_reload(self):
+    def test_FileStoragereload(self):
         """check presence of reload() method in Engine file."""
         self.assertIsNone(FileStorage().reload())
 
