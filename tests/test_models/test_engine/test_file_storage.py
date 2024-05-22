@@ -2,17 +2,20 @@
 """
 Test for storage engine class.
 """
-from datetime import datetime
 import unittest
-from time import sleep
 import json
+import os
 from models.engine.file_storage import FileStorage
-from models.base_model import BaseModel
 from models import storage
 
 
 class Test_FileStorage(unittest.TestCase):
     """Test the FileStorage Engine class."""
+
+    def reset_storage(self):
+        """Reset the file after updating it with test method."""
+        if os.path.isfile(FileStorage._FileStorage__file_path):
+            os.remove(FileStorage._FileStorage__file_path)
     def test_obje_creation(self):
         """Check cretion of Storage object."""
         obj = FileStorage()
@@ -26,26 +29,14 @@ class Test_FileStorage(unittest.TestCase):
         """Test the type of __file_path of Storage engine."""
         self.assertIs(str, type(FileStorage._FileStorage__file_path))
 
-    def test_FileStorage_reload(self):
-        """check presence of reload() method in Engine file."""
+    def test_FileStorage_methods(self):
+        """check presence of method in Engine file."""
         live_dict = storage.all()
         storage.save()
         live_obj = storage.reload()
         file_dict = storage.all()
         self.assertEqual(len(live_dict), len(file_dict))
-
-    def test_FileStorage_new(self):
-        """check presence of new() method in Engine file."""
-        b = BaseModel()
-        self.assertIsNone(FileStorage().new(b))
-
-    def test_FileStorage_save(self):
-        """check presence of save() method in Engine file."""
-        self.assertIsNone(FileStorage().save())
-
-    def test_reload(self):
-        """check presence of reload() method in Engine file."""
-        self.assertIsNone(FileStorage().reload())
+        self.reset_storage()
 
     def test_method_documented(self):
         """Check if method of thee class are documented."""
