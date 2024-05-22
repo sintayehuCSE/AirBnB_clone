@@ -19,6 +19,7 @@ class TestBaseModel(unittest.TestCase):
        cases
     """
     def resetStorage(self):
+        """Reset file storage and live object after testing."""
         FileStorage._FileStorage__objects = {}
         if os.path.isfile(FileStorage._FileStorage__file_path):
             os.remove(FileStorage._FileStorage__file_path)
@@ -159,6 +160,7 @@ class TestBaseModel(unittest.TestCase):
             BaseModel.save(self, 98)
         msg = "BaseModel.save() takes 1 positional argument but 2 were given"
         self.assertEqual(str(e.exception), msg)
+        self.resetStorage()
 
 
 if __name__ == "__main__":
