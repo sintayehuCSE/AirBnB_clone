@@ -8,6 +8,7 @@ from time import sleep
 import json
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
+from models import storage
 
 
 class Test_FileStorage(unittest.TestCase):
@@ -25,9 +26,13 @@ class Test_FileStorage(unittest.TestCase):
         """Test the type of __file_path of Storage engine."""
         self.assertIs(str, type(FileStorage._FileStorage__file_path))
 
-    def test_FileStorage_all(self):
-        """check presence of all() method in Engine file."""
-        self.assertIsNotNone(FileStorage().all())
+    def test_FileStorage_reload(self):
+        """check presence of reload() method in Engine file."""
+        live_dict = storage.all()
+        storage.save()
+        live_obj = storage.reload()
+        file_dict = storage.all()
+        self.assertEqual(len(live_dict), len(file_dict))
 
     def test_FileStorage_new(self):
         """check presence of new() method in Engine file."""
@@ -44,7 +49,7 @@ class Test_FileStorage(unittest.TestCase):
 
     def test_method_documented(self):
         """Check if method of thee class are documented."""
-        self.assertIsNotNone(FileStorage.all)
+        self.assertIsNotNone(FileStorage.all.__dict__)
         self.assertIsNotNone(FileStorage.new.__dict__)
         self.assertIsNotNone(FileStorage.save.__dict__)
         self.assertIsNotNone(FileStorage.reload.__dict__)
