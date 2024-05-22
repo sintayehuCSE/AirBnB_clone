@@ -128,121 +128,52 @@ class HBNBCommand(cmd.Cmd):
     def do_User(self, arg):
         """Print List of all instances of User class. OR thier count"""
         if arg == ".all()":
-            inst = []
-            live_obj = storage.all()
-            for key in live_obj.keys():
-                if type(live_obj[key]) is User:
-                    inst.append(str(live_obj[key]))
-            print(inst)
+            self.do_all("User")
         elif arg == '.count()':
-            count = 0
-            live_obj = storage.all()
-            for key in live_obj.keys():
-                if type(live_obj[key]) is User:
-                    count += 1
-            print(count)                
+            self.count("User")
+        #elif arg.startswith(".show("):          
 
     def do_BaseModel(self, arg):
         """Print List of all instances of BaseModel class. OR thier count"""
         if arg == ".all()":
-            inst = []
-            live_obj = storage.all()
-            for key in live_obj.keys():
-                if type(live_obj[key]) is BaseModel:
-                    inst.append(str(live_obj[key]))
-            print(inst)
+            self.do_all("BaseModel")
         elif arg == '.count()':
-            count = 0
-            live_obj = storage.all()
-            for key in live_obj.keys():
-                if type(live_obj[key]) is BaseModel:
-                    count += 1
-            print(count)
+            self.count("BaseModel")
 
     def do_Place(self, arg):
         """Print List of all instances of Place class. OR thier count"""
         if arg == ".all()":
-            inst = []
-            live_obj = storage.all()
-            for key in live_obj.keys():
-                if type(live_obj[key]) is Place:
-                    inst.append(str(live_obj[key]))
-            print(inst)
+            self.do_all("Place")
         elif arg == '.count()':
-            count = 0
-            live_obj = storage.all()
-            for key in live_obj.keys():
-                if type(live_obj[key]) is Place:
-                    count += 1
-            print(count)
+            self.count("Place")
 
     def do_State(self, arg):
         """Print List of all instances of State class. OR thier count"""
         if arg == ".all()":
-            inst = []
-            live_obj = storage.all()
-            for key in live_obj.keys():
-                if type(live_obj[key]) is State:
-                    inst.append(str(live_obj[key]))
-            print(inst)
+            self.do_all("State")
         elif arg == '.count()':
-            count = 0
-            live_obj = storage.all()
-            for key in live_obj.keys():
-                if type(live_obj[key]) is State:
-                    count += 1
-            print(count)
+            self.count("State")
 
     def do_City(self, arg):
         """Print List of all instances of City class. OR thier count"""
         if arg == ".all()":
-            inst = []
-            live_obj = storage.all()
-            for key in live_obj.keys():
-                if type(live_obj[key]) is City:
-                    inst.append(str(live_obj[key]))
-            print(inst)
+            self.do_all("City")
         elif arg == '.count()':
-            count = 0
-            live_obj = storage.all()
-            for key in live_obj.keys():
-                if type(live_obj[key]) is City:
-                    count += 1
-            print(count)
+            self.count("City")
 
     def do_Amenity(self, arg):
         """Print List of all instances of Amenity class. OR thier count"""
         if arg == ".all()":
-            inst = []
-            live_obj = storage.all()
-            for key in live_obj.keys():
-                if type(live_obj[key]) is Amenity:
-                    inst.append(str(live_obj[key]))
-            print(inst)
+            self.do_all("Amenity")
         elif arg == '.count()':
-            count = 0
-            live_obj = storage.all()
-            for key in live_obj.keys():
-                if type(live_obj[key]) is Amenity:
-                    count += 1
-            print(count)
+           self.count("Amenity")
 
     def do_Review(self, arg):
         """Print List of all instances of Review class. OR thier count"""
         if arg == ".all()":
-            inst = []
-            live_obj = storage.all()
-            for key in live_obj.keys():
-                if type(live_obj[key]) is Review:
-                    inst.append(str(live_obj[key]))
-            print(inst)
+            self.do_all("Review")
         elif arg == '.count()':
-            count = 0
-            live_obj = storage.all()
-            for key in live_obj.keys():
-                if type(live_obj[key]) is Review:
-                    count += 1
-            print(count)
+            self.count("Review")
 
     def find_class(self, arg):
         """Check if a specified class name is valid
@@ -313,6 +244,17 @@ class HBNBCommand(cmd.Cmd):
         except KeyError:
             print("** no instance found **")
             return None
+    
+    def count(self, class_name):
+        """Count the number of live instances of a class."""
+        count = 0
+        live_obj = storage.all()
+        constructor = self.find_class(class_name)
+        if constructor:
+            for key in live_obj.keys():
+                if type(live_obj[key]) is constructor:
+                    count += 1
+            print(count)
 
 
 if __name__ == "__main__":
