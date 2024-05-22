@@ -125,6 +125,76 @@ class HBNBCommand(cmd.Cmd):
                         obj.save()
             self.identchars = old_identchars
 
+    def do_User(self, arg):
+        """Print List of all instances of User class."""
+        if arg == ".all()":
+            inst = []
+            live_obj = storage.all()
+            for key in live_obj.keys():
+                if type(live_obj[key]) is User:
+                    inst.append(str(live_obj[key]))
+            print(inst)
+
+    def do_BaseModel(self, arg):
+        """Print List of all instances of BaseModel class."""
+        if arg == ".all()":
+            inst = []
+            live_obj = storage.all()
+            for key in live_obj.keys():
+                if type(live_obj[key]) is BaseModel:
+                    inst.append(str(live_obj[key]))
+            print(inst)
+
+    def do_Place(self, arg):
+        """Print List of all instances of Place class."""
+        if arg == ".all()":
+            inst = []
+            live_obj = storage.all()
+            for key in live_obj.keys():
+                if type(live_obj[key]) is Place:
+                    inst.append(str(live_obj[key]))
+            print(inst)
+
+    def do_State(self, arg):
+        """Print List of all instances of State class."""
+        if arg == ".all()":
+            inst = []
+            live_obj = storage.all()
+            for key in live_obj.keys():
+                if type(live_obj[key]) is State:
+                    inst.append(str(live_obj[key]))
+            print(inst)
+
+    def do_City(self, arg):
+        """Print List of all instances of City class."""
+        if arg == ".all()":
+            inst = []
+            live_obj = storage.all()
+            for key in live_obj.keys():
+                if type(live_obj[key]) is City:
+                    inst.append(str(live_obj[key]))
+            print(inst)
+
+    def do_Amenity(self, arg):
+        """Print List of all instances of Amenity class."""
+        if arg == ".all()":
+            inst = []
+            live_obj = storage.all()
+            for key in live_obj.keys():
+                if type(live_obj[key]) is Amenity:
+                    inst.append(str(live_obj[key]))
+            print(inst)
+
+    def do_Review(self, arg):
+        """Print List of all instances of Review class."""
+        if arg == ".all()":
+            inst = []
+            live_obj = storage.all()
+            for key in live_obj.keys():
+                if type(live_obj[key]) is Review:
+                    inst.append(str(live_obj[key]))
+            print(inst)
+
     def find_class(self, arg):
         """Check if a specified class name is valid
             Args:
