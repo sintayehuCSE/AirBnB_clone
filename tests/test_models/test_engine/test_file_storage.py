@@ -44,7 +44,7 @@ class Test_FileStorage(unittest.TestCase):
 
     def test_method_documented(self):
         """Check if method of thee class are documented."""
-        self.assertIsNotNone(FileStorage.all.__dict__)
+        self.assertIsNotNone(FileStorage.all)
         self.assertIsNotNone(FileStorage.new.__dict__)
         self.assertIsNotNone(FileStorage.save.__dict__)
         self.assertIsNotNone(FileStorage.reload.__dict__)
