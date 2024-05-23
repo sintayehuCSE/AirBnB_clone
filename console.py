@@ -132,6 +132,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 if obj:
                     # Update by passed in dictionary.
+                    obj_attr = obj_attr.replace("'", '"')
                     try:
                         with open("update_by_dict.json", 'w',
                                   encoding='utf-8') as f:
