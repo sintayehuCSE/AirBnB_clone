@@ -100,9 +100,16 @@ class HBNBCommand(cmd.Cmd):
             old_identchars = self.identchars
             self.identchars = self.identchars + '-"'
             obj_id, obj_attr = self.parse_arg(obj_info)
+            obj_id = obj_id.strip('"')
+            obj_attr = obj_attr.strip(' ')
             obj = self.find_obj(class_name, obj_id)
             if obj:
+                #if abj_attr[0] == '{': Update by dicitonary
+                # self.update_by_dict(obj, abj_attr) Now you have a dict act accordingly no need for parsing
+                # Check if the attribute is new or old one and update or set it accordingly.
                 attr_name, attr_value = self.parse_arg(obj_attr)
+                attr_name = attr_name.strip('"')
+                attr_value = attr_value.strip(' ')
                 if not attr_name:
                     print("** attribute name missing **")
                 elif not attr_value:
@@ -127,53 +134,31 @@ class HBNBCommand(cmd.Cmd):
 
     def do_User(self, arg):
         """Print List of all instances of User class. OR thier count"""
-        if arg == ".all()":
-            self.do_all("User")
-        elif arg == '.count()':
-            self.count("User")
-        #elif arg.startswith(".show("):          
+        self.class_command("User", arg)        
 
     def do_BaseModel(self, arg):
         """Print List of all instances of BaseModel class. OR thier count"""
-        if arg == ".all()":
-            self.do_all("BaseModel")
-        elif arg == '.count()':
-            self.count("BaseModel")
+        self.class_command("BaseModel", arg)
 
     def do_Place(self, arg):
         """Print List of all instances of Place class. OR thier count"""
-        if arg == ".all()":
-            self.do_all("Place")
-        elif arg == '.count()':
-            self.count("Place")
+        self.class_command("Place", arg)
 
     def do_State(self, arg):
         """Print List of all instances of State class. OR thier count"""
-        if arg == ".all()":
-            self.do_all("State")
-        elif arg == '.count()':
-            self.count("State")
+        self.class_command("State", arg)
 
     def do_City(self, arg):
         """Print List of all instances of City class. OR thier count"""
-        if arg == ".all()":
-            self.do_all("City")
-        elif arg == '.count()':
-            self.count("City")
+        self.class_command("City", arg)
 
     def do_Amenity(self, arg):
         """Print List of all instances of Amenity class. OR thier count"""
-        if arg == ".all()":
-            self.do_all("Amenity")
-        elif arg == '.count()':
-           self.count("Amenity")
+        self.class_command("Amenity", arg)
 
     def do_Review(self, arg):
         """Print List of all instances of Review class. OR thier count"""
-        if arg == ".all()":
-            self.do_all("Review")
-        elif arg == '.count()':
-            self.count("Review")
+        self.class_command("Review", arg)
 
     def find_class(self, arg):
         """Check if a specified class name is valid
@@ -255,6 +240,24 @@ class HBNBCommand(cmd.Cmd):
                 if type(live_obj[key]) is constructor:
                     count += 1
             print(count)
+    
+    def class_command(self, class_name, arg):
+        """Perform the requested class command."""
+        if arg == ".all()":
+            self.do_all(class_name)
+        elif arg == '.count()':
+            self.count(class_name)
+        elif arg.startswith(".show(") and arg.endswith(")"):
+            obj_id = arg[6:].lstrip('"')
+            self.do_show(class_name + " " + obj_id.rstrip('")'))
+        elif arg.startswith(".destroy(") and arg.endswith(")"):
+            obj_id = arg[9:].lstrip('("')
+            self.do_destroy(class_name + " " + obj_id.rstrip('")'))
+        elif arg.startswith(".update(") and arg.endswith(")"):
+            arg_format = arg[8:].rstrip(')')
+            self.do_update(class_name + " " + arg_format)
+        else:
+            print("*** Unknown syntax: {}".format(arg))
 
 
 if __name__ == "__main__":
