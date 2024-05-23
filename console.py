@@ -3,6 +3,7 @@
     ABNB Clone project
 """
 import cmd
+import json
 from models.base_model import BaseModel
 from models.user import User
 from models.city import City
@@ -103,10 +104,7 @@ class HBNBCommand(cmd.Cmd):
             obj_id = obj_id.strip('"')
             obj_attr = obj_attr.strip(' ')
             obj = self.find_obj(class_name, obj_id)
-            if obj:
-                #if abj_attr[0] == '{': Update by dicitonary
-                # self.update_by_dict(obj, abj_attr) Now you have a dict act accordingly no need for parsing
-                # Check if the attribute is new or old one and update or set it accordingly.
+            if obj and obj_attr[0] != '{':
                 attr_name, attr_value = self.parse_arg(obj_attr)
                 attr_name = attr_name.strip('"')
                 attr_value = attr_value.strip(' ')
@@ -130,11 +128,37 @@ class HBNBCommand(cmd.Cmd):
                         else:
                             setattr(obj, attr_name, attr_value)
                         obj.save()
-            self.identchars = old_identchars
+                self.identchars = old_identchars
+            else:
+                if obj:
+                    # Update by passed in dictionary.
+                    try:
+                        with open("update_by_dict.json", 'w',
+                                  encoding='utf-8') as f:
+                            f.write(obj_attr)
+                        with open("update_by_dict.json", 'r',
+                                  encoding='utf-8') as f:
+                            obj_attr = json.load(f)
+                        for k in obj_attr.keys():
+                            if k not in ['id', 'created_at', 'updated_at']:
+                                if hasattr(obj, k):
+                                    try:
+                                        attr_type = type(obj.__dict__[k])
+                                        setattr(obj, k,
+                                                attr_type(obj_attr[k]))
+                                    except kError:
+                                        attr_type = type(type(obj).__dict__[k])
+                                        setattr(obj, k,
+                                                attr_type(obj_attr[k]))
+                                else:
+                                    setattr(obj, k, obj_attr[k])
+                        obj.save()
+                    except (Exception) as e:
+                        print(e)
 
     def do_User(self, arg):
         """Print List of all instances of User class. OR thier count"""
-        self.class_command("User", arg)        
+        self.class_command("User", arg)
 
     def do_BaseModel(self, arg):
         """Print List of all instances of BaseModel class. OR thier count"""
@@ -229,7 +253,7 @@ class HBNBCommand(cmd.Cmd):
         except KeyError:
             print("** no instance found **")
             return None
-    
+
     def count(self, class_name):
         """Count the number of live instances of a class."""
         count = 0
@@ -240,7 +264,7 @@ class HBNBCommand(cmd.Cmd):
                 if type(live_obj[key]) is constructor:
                     count += 1
             print(count)
-    
+
     def class_command(self, class_name, arg):
         """Perform the requested class command."""
         if arg == ".all()":
