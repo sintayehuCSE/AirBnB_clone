@@ -36,9 +36,8 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_create(self, arg):
-        """Creates a new instance of BaseModel.
-            Saves it (to the JSON file) and
-            Prints the id of this new object
+        """Usage: create <class>
+        Create a new class instance and print its id.
         """
         constructor = self.find_class(arg)
         if constructor:
@@ -47,8 +46,8 @@ class HBNBCommand(cmd.Cmd):
             print(obj.id)
 
     def do_show(self, arg):
-        """Prints the string representation of an instance based
-            on its class-name and its id.
+        """Usage: show <class> <id> or <class>.show(<id>)
+        Display the string representation of a class instance of a given id.
         """
         class_name, obj_id = self.parse_arg(arg)
         constructor = self.find_class(class_name)
@@ -58,8 +57,8 @@ class HBNBCommand(cmd.Cmd):
                 print(obj)
 
     def do_destroy(self, arg):
-        """Deletes an instance based on its class-name and ID and
-            Saves the change into the JSON file.
+        """Usage: destroy <class> <id> or <class>.destroy(<id>)
+        Delete a class instance of a given id.
         """
         class_name, obj_id = self.parse_arg(arg)
         constructor = self.find_class(class_name)
@@ -73,9 +72,9 @@ class HBNBCommand(cmd.Cmd):
                 storage.save()
 
     def do_all(self, arg):
-        """Prints a list of string representation of all instance based or
-            not on the class name.
-        """
+        """Usage: all or all <class> or <class>.all()
+        Display string representations of all instances of a given class.
+        If no class is specified, displays all instantiated objects."""
         live_obj = storage.all()
         str_repr = []
         if arg:
@@ -91,10 +90,11 @@ class HBNBCommand(cmd.Cmd):
             print(str_repr)
 
     def do_update(self, arg):
-        """Update an instance based on the class name and its ID
-            by adding or updating attribute. Does save the change
-            to JSON file.
-        """
+        """Usage: update <class> <id> <attribute_name> <attribute_value> or
+       <class>.update(<id>, <attribute_name>, <attribute_value>) or
+       <class>.update(<id>, <dictionary>)
+        Update a class instance of a given id by adding or updating
+        a given attribute key/value pair or dictionary."""
         class_name, obj_info = self.parse_arg(arg)
         constructor = self.find_class(class_name)
         if constructor:
@@ -256,7 +256,9 @@ class HBNBCommand(cmd.Cmd):
             return None
 
     def count(self, class_name):
-        """Count the number of live instances of a class."""
+        """Usage: count <class> or <class>.count()
+        Retrieve the number of instances of a given class.
+        """
         count = 0
         live_obj = storage.all()
         constructor = self.find_class(class_name)
