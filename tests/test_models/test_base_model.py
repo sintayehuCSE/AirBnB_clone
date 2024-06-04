@@ -35,9 +35,9 @@ class TestBaseModel(unittest.TestCase):
         """Tests __init__ with no arguments."""
         with self.assertRaises(TypeError) as e:
             BaseModel.__init__()
-        m1 = "BaseModel.__init__() missing 1 required "
-        m2 = "positional argument: 'self'"
-        self.assertEqual(str(e.exception), m1 + m2)
+            m1 = "__init__() missing 1 required "
+            m2 = "positional argument: 'self'"
+            self.assertEqual(str(e.exception), m1 + m2)
 
     def test_3_datetime_created(self):
         """Tests if updated_at and created_at time are current at creation."""
@@ -96,7 +96,7 @@ class TestBaseModel(unittest.TestCase):
         """Tests to_dict() with no arguments."""
         with self.assertRaises(TypeError) as e:
             BaseModel.to_dict()
-        m1 = "BaseModel.to_dict() missing 1 required "
+        m1 = "to_dict() missing 1 required "
         m2 = "positional argument: 'self'"
         self.assertEqual(str(e.exception), m1 + m2)
 
@@ -104,7 +104,7 @@ class TestBaseModel(unittest.TestCase):
         """Tests to_dict() with too many arguments."""
         with self.assertRaises(TypeError) as e:
             BaseModel.to_dict(self, 98)
-        m1 = "BaseModel.to_dict() takes 1 positional "
+        m1 = "to_dict() takes 1 positional "
         m2 = "argument but 2 were given"
         self.assertEqual(str(e.exception), m1 + m2)
 
@@ -150,7 +150,7 @@ class TestBaseModel(unittest.TestCase):
         self.resetStorage()
         with self.assertRaises(TypeError) as e:
             BaseModel.save()
-        msg = "BaseModel.save() missing 1 required positional argument: 'self'"
+        msg = "save() missing 1 required positional argument: 'self'"
         self.assertEqual(str(e.exception), msg)
 
     def test_5_save_excess_args(self):
@@ -158,7 +158,7 @@ class TestBaseModel(unittest.TestCase):
         self.resetStorage()
         with self.assertRaises(TypeError) as e:
             BaseModel.save(self, 98)
-        msg = "BaseModel.save() takes 1 positional argument but 2 were given"
+        msg = "save() takes 1 positional argument but 2 were given"
         self.assertEqual(str(e.exception), msg)
         self.resetStorage()
 
