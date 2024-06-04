@@ -4,6 +4,7 @@
 """
 import cmd
 import json
+import os
 from models.base_model import BaseModel
 from models.user import User
 from models.city import City
@@ -156,6 +157,7 @@ class HBNBCommand(cmd.Cmd):
                                         else:
                                             setattr(obj, k, obj_attr[k])
                                 obj.save()
+                                os.remove("update_by_dict.json")
                             except (Exception) as e:
                                 print(e)
 
