@@ -104,58 +104,60 @@ class HBNBCommand(cmd.Cmd):
             obj_id = obj_id.strip('"')
             obj_attr = obj_attr.strip(' ')
             obj = self.find_obj(class_name, obj_id)
-            if obj and obj_attr[0] != '{':
+            if obj:
                 attr_name, attr_value = self.parse_arg(obj_attr)
                 attr_name = attr_name.strip('"')
                 attr_value = attr_value.strip(' ')
-                if not attr_name:
+                if not attr_name and obj_attr == '':
                     print("** attribute name missing **")
                 elif not attr_value:
                     print("** value missing **")
                 else:
-                    attr_value, other_arg = self.parse_arg(attr_value)
-                    attr_value = attr_value.strip('"')
-                    cnst = (attr_name != 'id' and attr_name != 'created_at'
-                            and attr_name != 'updated_at')
-                    if cnst:
-                        if hasattr(obj, attr_name):
+                    self.identchars += '.'
+                    if obj_attr[0] != '{':
+                        attr_value, other_arg = self.parse_arg(attr_value)
+                        attr_value = attr_value.strip('"')
+                        cnst = (attr_name != 'id' and attr_name != 'created_at'
+                               and attr_name != 'updated_at')
+                        if cnst:
+                            if hasattr(obj, attr_name):
+                                try:
+                                    attr_type = type(obj.__dict__[attr_name])
+                                    setattr(obj, attr_name, attr_type(attr_value))
+                                except KeyError:
+                                    attr_type = type(type(obj).__dict__[attr_name])
+                                    setattr(obj, attr_name, attr_type(attr_value))
+                            else:
+                                setattr(obj, attr_name, attr_value)
+                            obj.save()
+                        self.identchars = old_identchars
+                    else:
+                        if obj:
+                            # Update by passed in dictionary.
+                            obj_attr = obj_attr.replace("'", '"')
                             try:
-                                attr_type = type(obj.__dict__[attr_name])
-                                setattr(obj, attr_name, attr_type(attr_value))
-                            except KeyError:
-                                attr_type = type(type(obj).__dict__[attr_name])
-                                setattr(obj, attr_name, attr_type(attr_value))
-                        else:
-                            setattr(obj, attr_name, attr_value)
-                        obj.save()
-                self.identchars = old_identchars
-            else:
-                if obj:
-                    # Update by passed in dictionary.
-                    obj_attr = obj_attr.replace("'", '"')
-                    try:
-                        with open("update_by_dict.json", 'w',
-                                  encoding='utf-8') as f:
-                            f.write(obj_attr)
-                        with open("update_by_dict.json", 'r',
-                                  encoding='utf-8') as f:
-                            obj_attr = json.load(f)
-                        for k in obj_attr.keys():
-                            if k not in ['id', 'created_at', 'updated_at']:
-                                if hasattr(obj, k):
-                                    try:
-                                        attr_type = type(obj.__dict__[k])
-                                        setattr(obj, k,
-                                                attr_type(obj_attr[k]))
-                                    except kError:
-                                        attr_type = type(type(obj).__dict__[k])
-                                        setattr(obj, k,
-                                                attr_type(obj_attr[k]))
-                                else:
-                                    setattr(obj, k, obj_attr[k])
-                        obj.save()
-                    except (Exception) as e:
-                        print(e)
+                                with open("update_by_dict.json", 'w',
+                                          encoding='utf-8') as f:
+                                    f.write(obj_attr)
+                                with open("update_by_dict.json", 'r',
+                                          encoding='utf-8') as f:
+                                    obj_attr = json.load(f)
+                                for k in obj_attr.keys():
+                                    if k not in ['id', 'created_at', 'updated_at']:
+                                        if hasattr(obj, k):
+                                            try:
+                                                attr_type = type(obj.__dict__[k])
+                                                setattr(obj, k,
+                                                        attr_type(obj_attr[k]))
+                                            except KeyError:
+                                                attr_type = type(type(obj).__dict__[k])
+                                                setattr(obj, k,
+                                                        attr_type(obj_attr[k]))
+                                        else:
+                                            setattr(obj, k, obj_attr[k])
+                                obj.save()
+                            except (Exception) as e:
+                                print(e)
 
     def do_User(self, arg):
         """Print List of all instances of User class. OR thier count"""
@@ -284,7 +286,7 @@ class HBNBCommand(cmd.Cmd):
             arg_format = arg[8:].rstrip(')')
             self.do_update(class_name + " " + arg_format)
         else:
-            print("*** Unknown syntax: {}".format(arg))
+            print("*** Unknown syntax: {}{}".format(class_name, arg))
 
 
 if __name__ == "__main__":
